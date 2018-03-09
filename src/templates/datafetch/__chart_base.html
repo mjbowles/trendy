@@ -1,0 +1,56 @@
+{% extends "datafetch/__base.html" %}
+
+{% load static %}
+
+{% block title %}LEDE Reservoir Data Center{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+    </script>
+{% endblock %}
+
+{% load staticfiles %}
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'datafetch/jquery/jquery-ui-1.12.1/jquery-ui.css' %}">
+  <script src="{% static 'datafetch/jquery/jquery-1.12.4.js' %}"></script>
+  <script src="{% static 'datafetch/jquery/jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+  <script>
+  $( function() {
+    $( ".datepicker" ).datepicker();
+  } );
+  </script>
+{% endblock %}
+
+
+{% block content %}            
+    <header>
+        <h2>{% block chart_heading %}{% endblock %}</h2>
+    </header>
+    <div class='row'>
+        <div class='col-12'>
+            {% block dateform %}
+            {% endblock %}
+        </div>
+    </div>
+    <div  class='row'>
+        <div  class='col-12'>
+            <div id="{{ chart.get_html_id }}" class='lede-chart'>
+            {{ chart.as_html }}
+            </div>
+        </div>
+        <table>
+        <tr> Summary </tr>
+        {% for description, value in chart.summary %}
+        <tr>
+            <td>{{ description }}</td><td> {{ value }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'download_view' %}" class="button"> Get CSV </a>
+    </div>
+           
+{% endblock %}

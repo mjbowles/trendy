@@ -1,0 +1,9 @@
+
+
+div#container{width:1500px}
+div#navigation{width:200px}
+div#content{width:1200px}
+
+.boxed {
+ border: 1px solid black   
+}
