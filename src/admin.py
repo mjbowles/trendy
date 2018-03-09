@@ -1,10 +1,27 @@
 from django.contrib import admin
 
-#import sys
-#sys.path.insert(0, '/media/sf_arcshare/LEDE/')
+# Register your models here.
 
-#from datafetch.models import DepthMeasurement, OutflowMeasurement
+from .models import TimeSeriesDataSet, Site, Instrument, Sensor, TSDatum, TSDSCalibration
 
-#admin.site.register(DepthMeasurement)
-#admin.site.register(OutflowMeasurement)
+class TimeSeriesDataSetAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        data = obj.tsdatum_set.all()
+        #print('calling save')
+        for tsd in data:
+            #print('looping')
+            if obj.maxval and obj.maxval < tsd.value:
+                tsd.delete()
+            if obj.minval and obj.minval > tsd.value:
+                tsd.delete()
+        obj.save()
 
+admin.site.register(TimeSeriesDataSet, TimeSeriesDataSetAdmin)
+
+
+
+admin.site.register(Site)
+admin.site.register(Instrument)
+admin.site.register(Sensor)
+admin.site.register(TSDatum)
+admin.site.register(TSDSCalibration)

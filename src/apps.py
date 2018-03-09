@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class DatafetchConfig(AppConfig):
-    name = 'datafetch'
+class TimeseriesConfig(AppConfig):
+    name = 'timeseries'
