@@ -1,0 +1,54 @@
+{% extends "timeseries/__base.html" %}
+
+{% block title %}ZA Sites data viewer{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+    </script>
+{% endblock %}
+
+{% load staticfiles %}
+{% block extra_head %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( ".datepicker" ).datepicker();
+  } );
+  </script>
+{% endblock %}
+
+
+{% block content %}            
+    <header>
+        <h2>{% block chart_heading %}{% endblock %}</h2>
+    </header>
+    <div class='row'>
+        <div class='col-12'>
+            {% block dateform %}
+                <form action="/datafetch/depthchart" method="get">
+                    <label for="chart_begin_date">Begin Date: </label>
+                    <input id="datepicker" type="text" name="begin_date" value="{{ current_date }}">
+                    <input type="submit" value="OK">
+                </form>
+            {% endblock %}
+        </div>
+    </div>
+    <div  class='row'>
+        <div  class='col-12'>
+            <div id="{{ chart.get_html_id }}" class='lede-chart'>
+            {{ chart.as_html }}
+            </div>
+        </div>
+    </div>
+    <div>
+        {% block sensors %}
+        
+        {%endblock%}
+    </div>
+{% endblock %}

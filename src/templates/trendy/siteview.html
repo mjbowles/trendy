@@ -1,0 +1,53 @@
+{% extends "timeseries/__chart_base.html" %}
+
+{% comment %}
+{% block chart_heading %}  
+{{site}} sensors
+{% endblock %}{% endcomment %}
+
+
+
+{% block content %} 
+    <header>
+        <h2>{% block chart_heading %}{{site}}{% endblock %}</h2>
+    </header>
+<!--    <div class='row'>
+        <div class='col-12'>
+        </div>
+    </div>--> 
+    {% block dateform %}
+        {% url 'site_view' site|urlencode as sitelink %}
+        <form action="{{ sitelink }}" method="get">
+            <label for="chart_begin_date">Begin Date: </label>
+            <input class="datepicker" type="text" name="begin_date" value="{{ current_date }}">
+            <label for="chart_end_date">End Date: </label>
+            <input class="datepicker" type="text" name="end_date" value="{{ end_date }}">
+            <input type="submit" value="OK">
+        </form>
+    {% endblock %}
+    {% for chart in charts %}
+        <div class='lede-chart-wrapper' >
+            <div class='lede-chart' id="{{ chart.get_html_id }}">
+                {{ chart.as_html }}
+            </div>
+            <table>
+                <tr> Summary </tr>
+                {% for description, value in chart.summary %}
+                <tr>
+                    <td>{{ description }}</td><td> {{ value }} </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <a href="{% url 'download_view' %}" class="button"> Get CSV </a>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% comment %}{% block sensors %}
+<ul>
+{% for sensor in allsensors %}
+        {% url 'sensor_view' site sensor.id as sensorlink %}
+        <li><a href="{{ sensorlink }}">{{ sensor }} </a></li>
+{% endfor %}
+</ul>
+{% endblock %}{% endcomment %}

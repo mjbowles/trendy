@@ -1,0 +1,17 @@
+{% extends "timeseries/__l_right_sidebar.html" %}
+
+{% block title %}ZA Scada Sites{% endblock %}
+
+{% block main_col %}
+    <h1>Zancanella and Associates Sites</h1>
+    <p>Welcome.  Please select a site to view:</p>
+    <ul>
+    {% for site in allsites %}
+        {% url 'site_view' site|urlencode as sitelink %}
+        <li><a href="{{ sitelink }}">{{ site}} </a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block side_col %}
+{% endblock %}

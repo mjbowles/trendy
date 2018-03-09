@@ -1,0 +1,32 @@
+{% extends "collect/__chart_base.html" %}
+
+
+
+
+{% block content %} 
+
+    {% block dateform %}
+        {% url 'site_view' site|urlencode as sitelink %}
+        <form action="" method="post">
+            <label for="param_value">Value: </label>
+            <input type="text" name="begin_date" >
+            <input type="submit" value="OK">
+        </form>
+    {% endblock %}
+    {% for chart in charts %}
+        <div class='lede-chart-wrapper' >
+            <div class='lede-chart' id="{{ chart.get_html_id }}">
+                {{ chart.as_html }}
+            </div>
+            <table>
+                <tr> Summary </tr>
+                {% for description, value in chart.summary %}
+                <tr>
+                    <td>{{ description }}</td><td> {{ value }} </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endfor %}
+{% endblock %}
+
